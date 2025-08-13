@@ -22,12 +22,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
     //request에서 Authorization 헤더를 찾음
     String authorization= request.getHeader("Authorization");
 
     //Authorization 헤더 검증
     if (authorization == null || !authorization.startsWith("Bearer ")) {
-
       System.out.println("token null");
       filterChain.doFilter(request, response);
 
@@ -66,6 +66,17 @@ public class JWTFilter extends OncePerRequestFilter {
     Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     //세션에 사용자 등록
     SecurityContextHolder.getContext().setAuthentication(authToken);
+
+    // TODO: check auth object
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null) {
+      System.out.println("Authentication 객체가 없습니다. 403 발생 가능");
+    } else {
+      System.out.println("인증 객체: " + auth.getName() + ", 권한: " + auth.getAuthorities());
+    }
+
+    System.out.println("name=" + auth.getName());
+    auth.getAuthorities().forEach(a -> System.out.println("authority=" + a.getAuthority()));
 
     filterChain.doFilter(request, response);
     }
