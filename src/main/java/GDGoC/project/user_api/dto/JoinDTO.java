@@ -1,13 +1,14 @@
 package GDGoC.project.user_api.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import GDGoC.project.user_api.entity.User;
 
-@Getter
-@Setter
-public class JoinDTO {
-  private String username;
-  private String password;
-  private String name;
-  private String phone;
+public record JoinDto(
+        String username,
+        String password,
+        String name,
+        String phone
+) {
+  public static JoinDto from(User u) {
+    return new JoinDto(u.getUsername(), u.getPassword(), u.getPhone(), u.getRole());
+  }
 }
