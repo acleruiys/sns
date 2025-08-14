@@ -77,25 +77,25 @@ public class PostController {
     return ResponseEntity.noContent().build();  // 204
   }
 
-//  /** 좋아요 */
-//  @PreAuthorize("isAuthenticated()")
-//  @PostMapping("/{id}/like")
-//  public PostDto like(@PathVariable Integer id, Principal principal) {
-//    Post post = postService.getPost(id);
-//    User user = userService.getUser(principal.getName());
-//    postService.toggleLike(post, user);
-//    return PostDto.from(post);
-//  }
-//
-//  /** 좋아요 취소 */
-//  @PreAuthorize("isAuthenticated()")
-//  @DeleteMapping("/{id}/like")
-//  public PostDto cancelLike(@PathVariable Integer id, Principal principal) {
-//    Post post = postService.getPost(id);
-//    User user = userService.getUser(principal.getName());
-//    postService.toggleLike(post, user);
-//    return PostDto.from(post);
-//  }
+  /** 좋아요 */
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/{id}/like")
+  public PostDto like(@PathVariable Integer id, Principal principal) {
+    Post post = postService.getPost(id);
+    User user = userService.getUser(principal.getName());
+    postService.toggleLike(post, user);
+    return PostDto.from(post);
+  }
+
+  /** 좋아요 취소 */
+  @PreAuthorize("isAuthenticated()")
+  @DeleteMapping("/{id}/like")
+  public PostDto cancelLike(@PathVariable Integer id, Principal principal) {
+    Post post = postService.getPost(id);
+    User user = userService.getUser(principal.getName());
+    postService.toggleLike(post, user);
+    return PostDto.from(post);
+  }
 
   /** 내부 권한 체크 메서드 */
   private void authorize(Principal principal, Post post) {

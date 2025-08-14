@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
   Post findByContent(String content);
+  boolean existsByIdAndLikes_Id(Integer postId, Integer username);
 }

@@ -4,6 +4,7 @@ import GDGoC.project.user_api.entity.Post;
 import GDGoC.project.user_api.exception.DataNotFoundException;
 import GDGoC.project.user_api.entity.User;
 import GDGoC.project.user_api.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,13 +51,24 @@ public class PostService {
     this.postRepository.delete(post);
   }
 
-//  public boolean togglePostRequest(Post post, User user) {
-//    if (post.getLikes().contains(user)) {
-//      post.getLikes().remove(user);
-//      return false;   // 좋아요 취소됨
-//    } else {
-//      post.getLikes().add(user);
-//      return true;    // 좋아요 추가됨
-//    }
-//  }
+  @Transactional
+  public boolean toggleLike(Post post, User user) {
+    // ✅ 널 가드 (혹시 초기화가 안 된 경우 대비)
+    if (post.getLikes() == null) {
+      post.setLikes(new java.util.HashSet<>());
+    }
+
+    boolean alreadyLiked = postRepository.existsByIdAndLikes_Id(post.getId(), user.getId());
+
+    if (alreadyLiked) {
+      // JPA 컬렉션에서도 제거 (영속성 컨텍스트 반영)
+      post.getLikes().removeIf(u -> u.getId().equals(user.getId()));
+      postRepository.save(post);
+      return false; // 좋아요 취소됨
+    } else {
+      post.getLikes().add(user);
+      postRepository.save(post);
+      return true;  // 좋아요 추가됨
+    }
+  }
 }

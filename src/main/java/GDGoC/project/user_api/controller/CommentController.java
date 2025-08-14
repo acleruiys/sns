@@ -81,22 +81,23 @@ public class CommentController {
     return ResponseEntity.noContent().build();
   }
 
-//  /* ---------------- 좋아요 / 취소 ---------------- */
-//  @PreAuthorize("isAuthenticated()")
-//  @PostMapping("/comments/{id}/like")
-//  public CommentDto like(@PathVariable Integer id, Principal principal) {
-//    Comment comment = commentService.getComment(id);
-//    User user = userService.getUser(principal.getName());
-//    commentService.addLike(comment, user);
-//    return CommentDto.from(comment, user);
-//  }
-//
-//  @PreAuthorize("isAuthenticated()")
-//  @DeleteMapping("/comments/{id}/like")
-//  public CommentDto cancelLike(@PathVariable Integer id, Principal principal) {
-//    Comment comment = commentService.getComment(id);
-//    User user = userService.getUser(principal.getName());
-//    commentService.removeLike(comment, user);
-//    return CommentDto.from(comment, user);
-//  }
+  /* ---------------- 좋아요 / 취소 ---------------- */
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/comments/{id}/like")
+  public CommentDto like(@PathVariable Integer id, Principal principal) {
+    System.out.println("좋아요");
+    Comment comment = commentService.getComment(id);
+    User user = userService.getUser(principal.getName());
+    commentService.addLike(comment, user);
+    return CommentDto.from(comment, user);
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @DeleteMapping("/comments/{id}/like")
+  public CommentDto cancelLike(@PathVariable Integer id, Principal principal) {
+    Comment comment = commentService.getComment(id);
+    User user = userService.getUser(principal.getName());
+    commentService.removeLike(comment, user);
+    return CommentDto.from(comment, user);
+  }
 }

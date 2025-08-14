@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 public class Post {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(columnDefinition = "TEXT")
@@ -20,7 +21,6 @@ public class Post {
 
   private LocalDateTime createDate;
 
-  /* mappedBy: 참조 엔티티의 속성명 */
   @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
   private List<Comment> commentList;
 
@@ -29,6 +29,11 @@ public class Post {
 
   private LocalDateTime modifyDate;
 
-//  @ManyToMany
-//  Set<User> likes;
+  @ManyToMany
+  @JoinTable(
+          name = "Post_likes",
+          joinColumns = @JoinColumn(name = "post_id"),              // Post FK
+          inverseJoinColumns = @JoinColumn(name = "user_id")        // User FK (DB 실제 컬럼명에 맞춤)
+  )
+  private Set<User> likes = new HashSet<>();
 }

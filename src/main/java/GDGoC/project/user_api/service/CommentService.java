@@ -49,13 +49,13 @@ public class CommentService {
     commentRepository.delete(comment);
   }
 
-//  public void addLike(Comment comment, User user) {
-//    comment.getLikes().add(user);  // Set이라 중복 방지
-//  }
-//
-//  public void removeLike(Comment comment, User user) {
-//    comment.getLikes().remove(user);
-//  }
+  public void addLike(Comment comment, User user) {
+    comment.getLikes().add(user);  // Set이라 중복 방지
+  }
+
+  public void removeLike(Comment comment, User user) {
+    comment.getLikes().remove(user);
+  }
 
   /* 작성자 확인 공통 로직 */
   public void assertAuthor(Comment comment, String userId) {

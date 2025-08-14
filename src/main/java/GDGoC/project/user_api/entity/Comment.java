@@ -1,10 +1,12 @@
 package GDGoC.project.user_api.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -28,6 +30,6 @@ public class Comment {
 
   private LocalDateTime modifyDate;
 
-//  @ManyToMany
-//  Set<User> likes;
+  @ManyToMany
+  private Set<User> likes = new HashSet<>();
 }
